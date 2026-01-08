@@ -4,7 +4,7 @@ from transformers import AutoTokenizer
 
 def load_and_tokenize_dataset(
     model_name: str = "bert-base-uncased",
-    max_length: int = 256,
+    max_length: int = 128,
 ):
     """
     Loads the IMDB dataset and tokenizes text using a pretrained tokenizer.
