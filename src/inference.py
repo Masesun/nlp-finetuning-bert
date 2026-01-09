@@ -15,7 +15,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+    model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
     model.config.id2label = {
         0: "NEGATIVE",
@@ -156,6 +156,7 @@ if __name__ == "__main__":
         tokenizer, model = load_model()
         sample_text = "Psilocybin induces rapid structural plasticity in the prefrontal cortex."
         print(predict(sample_text, tokenizer, model))
+
 
 
 
