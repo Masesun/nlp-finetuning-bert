@@ -113,19 +113,19 @@ pip install -r requirements.txt
 ### Training the model
 To fine-tune the model on the IMDB dataset:
 ```bash
-python src/train.py
+python -m src.train
 ```
 
 ### Evaluation
 To evaluate the trained model and save metrics:
 ```bash
-python src/evaluation.py
+python -m src.evaluation
 ```
 
 ### Inference
 To run batch inference on example inputs:
 ```python
-python src/inference.py --input data/inference_samples.csv
+python -m src.inference --input data/inference_samples.csv
 ```
 Predictions are saved to data/predictions.csv.
 An extended version with additional analysis is saved to data/predictions_with_analysis.csv.
