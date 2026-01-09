@@ -1,0 +1,3 @@
+text,label,confidence,label_thresholded
+Psilocybin induces rapid structural plasticity in the PFC.,POSITIVE,0.881,POSITIVE
+No significant neuroplastic effects were observed.,NEGATIVE,0.5326,UNCERTAIN
