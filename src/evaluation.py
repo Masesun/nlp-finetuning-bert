@@ -3,11 +3,11 @@ from src.dataset import load_and_tokenize_dataset
 from src.train import compute_metrics
 import json, os
 
-MODEL_PATH = "models/bert-imdb"
+MODEL_NAME = "bert-base-uncased"
 
 tokenized_dataset, tokenizer = load_and_tokenize_dataset()
 
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
 training_args = TrainingArguments(
     output_dir="results",
@@ -30,3 +30,4 @@ with open("results/eval_metrics.json", "w") as f:
     json.dump(metrics, f, indent=2)
 
 print(metrics)
+
