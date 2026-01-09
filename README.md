@@ -1,28 +1,28 @@
-# Fine-Tuning BERT for Text Classification
+# End-to-End BERT Pipeline for Text Classification with Error Analysis
 
 ## Overview
-This project demonstrates fine-tuning a pre-trained transformer-based language model (BERT) for supervised text classification.  
-The goal is to build an end-to-end NLP pipeline including data loading, tokenization, model training, evaluation, and inference using industry-standard tools.
+This repository contains a complete, end-to-end Natural Language Processing pipeline for binary text classification using a fine-tuned BERT model.  
+The project covers the full workflow, including dataset handling, model training, evaluation, inference, and post-hoc error analysis.
 
-The project is designed as a portfolio-ready example of applied Natural Language Processing with deep learning.
+The codebase is structured to reflect good engineering practices in applied machine learning and is intended as a finished, portfolio-ready project rather than a tutorial or template.
 
 ---
 
 ## Task Description
-- **Task type**: Binary text classification
-- **Example use case**: Sentiment analysis of movie reviews
-- **Input**: Raw text
-- **Output**: Class label (positive / negative)
+- **Task type**: Binary text classification  
+- **Use case**: Sentiment analysis of movie reviews  
+- **Input**: Raw text  
+- **Output**: Predicted class label (positive / negative)
 
 ---
 
 ## Model
 - **Base model**: `bert-base-uncased`
-- **Architecture**: Transformer encoder with classification head
+- **Architecture**: Transformer encoder with a classification head
 - **Framework**: PyTorch
 - **Library**: Hugging Face Transformers
 
-The model is not trained from scratch. Instead, a pre-trained BERT model is fine-tuned on a downstream classification task.
+The model is initialized from a pre-trained BERT checkpoint and fine-tuned on a downstream supervised classification task.
 
 ---
 
@@ -31,60 +31,57 @@ The model is not trained from scratch. Instead, a pre-trained BERT model is fine
 - **Source**: Hugging Face Datasets library
 - **Classes**: Positive, Negative
 
-The dataset is loaded programmatically and is not stored in the repository.
+The dataset is loaded programmatically during training and evaluation and is not stored in the repository.  
+Only lightweight example inputs and outputs used for inference demonstration are included in version control.
 
 ---
 
 ## Training Details
-- **Tokenizer**: BERT tokenizer
-- **Max sequence length**: 256 tokens
+- **Training framework**: Hugging Face `Trainer` API
 - **Optimizer**: AdamW
 - **Learning rate**: 2e-5
 - **Batch size**: 16
 - **Epochs**: 3
-- **Weight decay**: 0.01
 
-Training is performed using the Hugging Face `Trainer` API.
+All experiments are run with fixed random seeds to ensure reproducibility.
 
 ---
 
 ## Evaluation
-Model performance is evaluated on a held-out test set using the following metrics:
+Model performance is evaluated on a held-out test split using standard classification metrics:
 - Accuracy
 - F1-score
 
-These metrics provide a balanced assessment of classification performance.
-
----
-
-## Results
-| Metric     | Value |
-|------------|-------|
-| Accuracy   |       |
-| F1-score   |       |
+Final evaluation results are stored in `results/eval_metrics.json`.
 
 ---
 
 ## Project Structure
 ```text
-nlp-finetuning-bert/
-├── data/
-│ ├── raw/ # Placeholder for raw data (not stored in repo)
-│ └── processed/ # Tokenized / processed datasets
-│
-├── notebooks/
-│ └── eda.ipynb # Exploratory data analysis
-│
-├── src/
-│ ├── dataset.py # Dataset loading and tokenization
-│ ├── model.py # Model initialization and configuration
-│ ├── train.py # Training pipeline
-│ └── evaluate.py # Evaluation metrics and analysis
-│
-├── run_training.py # Entry point for training
-├── requirements.txt # Python dependencies
-├── README.md # Project documentation
-└── .gitignore
+data/
+├── inference_samples.csv          # Example inputs for inference
+├── predictions.csv                # Model predictions
+├── predictions_with_analysis.csv  # Predictions enriched with analysis
+
+notebooks/
+├── eda.ipynb                      # Exploratory data analysis
+├── error_analysis.ipynb           # Qualitative error analysis
+├── inference.ipynb                # Inference demonstration notebook
+
+results/
+└── eval_metrics.json              # Final evaluation metrics
+
+src/
+├── __init__.py
+├── dataset.py                     # Dataset loading and tokenization
+├── model.py                       # Model initialization
+├── train.py                       # Training pipeline
+├── evaluation.py                  # Evaluation logic and metrics
+├── inference.py                   # Batch inference script
+
+.gitignore
+README.md
+requirements.txt
 ```
 
 ---
@@ -114,38 +111,38 @@ pip install -r requirements.txt
 ## Usage
 
 ### Training the model
-Run the training pipeline:
+To fine-tune the model on the IMDB dataset:
 ```bash
-python run_training.py
+python src/train.py
 ```
 
-### Inference example
-After training, the fine-tuned model can be used for inference:
+### Evaluation
+To evaluate the trained model and save metrics:
+```bash
+python src/evaluation.py
+```
+
+### Inference
+To run batch inference on example inputs:
 ```python
-from transformers import pipeline
-
-classifier = pipeline(
-    "text-classification",
-    model="models/bert_sentiment"
-)
-
-classifier("This movie was surprisingly good.")
+python src/inference.py --input data/inference_samples.csv
 ```
-
+Predictions are saved to data/predictions.csv.
+An extended version with additional analysis is saved to data/predictions_with_analysis.csv.
 ---
 
 ## Notes
-- No datasets are stored in the repository.
-- All data is loaded programmatically using the Hugging Face Datasets library.
+- No raw training datasets are stored in the repository.
 - Trained model weights are not committed to version control.
-- All experiments are reproducible using the provided scripts and fixed random seeds.
-- The project follows a modular structure designed for research and experimentation.
+- All paths are relative and platform-independent.
+- The project is fully reproducible using the provided scripts and configuration.
+- The codebase is organized to clearly separate training, evaluation, and inference concerns.
 
 ---
 
 ## Possible Extensions
-- Comparison of different transformer architectures such as BERT and RoBERTa
-- Implementation of a custom PyTorch training loop instead of the Trainer API
+- Comparison of different transformer architectures such as RoBERTa or DistilBERT
+- Implementation of a custom PyTorch training loop
 - Hyperparameter tuning and ablation studies
-- Error analysis and qualitative inspection of misclassified samples
-- Deployment of the fine-tuned model as a REST API using FastAPI
+- More advanced error analysis and explainability methods
+- Deployment of the inference pipeline as a REST API using FastAPI
